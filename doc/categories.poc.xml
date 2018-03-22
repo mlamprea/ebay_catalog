@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetCategoriesResponse xmlns="urn:ebay:apis:eBLBaseComponents">
+  <Timestamp>2018-03-22T00:10:12.472Z</Timestamp>
+  <Ack>Success</Ack>
+  <Version>1047</Version>
+  <Build>E1047_CORE_API_18645815_R1</Build>
+  <UpdateTime>2018-02-17T00:14:11.000Z</UpdateTime>
+  <CategoryVersion>118</CategoryVersion>
+  <ReservePriceAllowed>true</ReservePriceAllowed>
+  <MinimumReservePrice>0.0</MinimumReservePrice>
+</GetCategoriesResponse>
