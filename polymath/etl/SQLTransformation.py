@@ -22,6 +22,6 @@ class SQLTransformation:
                 categoryLevel = data.find('{0}CategoryLevel'.format(self.ns)).text
                 bestOfferEnabled = data.find('{0}BestOfferEnabled'.format(self.ns)).text
                 autoPayEnabled = data.find('{0}AutoPayEnabled'.format(self.ns)).text
-                out.append((categoryID,categoryParentID,categoryName,categoryLevel,bestOfferEnabled,autoPayEnabled))
+                out.append((int(categoryID),int(categoryParentID),categoryName,int(categoryLevel),bestOfferEnabled,autoPayEnabled))
         return out
         
