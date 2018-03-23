@@ -8,10 +8,13 @@ Created on Thu Mar 22 18:07:57 2018
 from SchemaBuilder import SchemaBuilder
 
 class LoaderSQL:
-    def __init__(self):
+    def __init__(self, prop):
         try:
             dbname = '../data/ebay.db'
+            self.prop = prop
             self.builder = SchemaBuilder(dbname)
+            ## FileBuilder
+            
         except Exception:
             print('Error: can\'t create database scheme ',dbname)
         
@@ -19,7 +22,7 @@ class LoaderSQL:
         try:
             #property
             filename = '../resources/db_schema.sql'
-            file = open(filename);
+            file = open(filename)
             script = file.read()
             file.close();
             # property

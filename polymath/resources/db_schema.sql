@@ -13,14 +13,14 @@ DROP TABLE IF EXISTS 'Category'
 
 CREATE TABLE 'Category'
 (
-    'CategoryID' TEXT NOT NULL,
-    'ParentID' TEXT,
-	'CategoryName' TEXT NULL,
-	'CategoryLevel' TEXT NULL,
-	'BestOfferEnabled' TEXT NULL,
-	'AutoPayEnabled' TEXT NULL,
+    'CategoryID' INTEGER NOT NULL,
+    'ParentID' INTEGER,
+    'CategoryName' TEXT NULL,
+    'CategoryLevel' INTEGER NULL,
+    'BestOfferEnabled' TEXT NULL,
+    'AutoPayEnabled' TEXT NULL,
     PRIMARY KEY('CategoryID'),
-	CONSTRAINT 'FK_CategoryParentID' FOREIGN KEY ('ParentID') REFERENCES 'Category' ('CategoryID') ON DELETE No Action ON UPDATE No Action
+    CONSTRAINT 'FK_CategoryParentID' FOREIGN KEY ('ParentID') REFERENCES 'Category' ('CategoryID') ON DELETE No Action ON UPDATE No Action
 )
 ;
 
