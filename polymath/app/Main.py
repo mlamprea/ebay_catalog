@@ -48,12 +48,12 @@ def main():
     (options, args) = parser.parse_args()
 
 
-    categoryID = options.categoryID
+    categoryID = int(options.categoryID)
     app = Main()
     if(options.rebuild):
         app.downloadData()
     else:
-        print("Rendering HTML ",categoryID+".hmtl")
+        print("Rendering HTML ",str(categoryID)+".hmtl")
         app.getTreeNodesHTML(categoryID)
         
 

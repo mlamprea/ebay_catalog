@@ -48,10 +48,12 @@ class Transformation:
         for (category, subCategory) in rows:
             self.graph.addEdge(int(category),int(subCategory))
         
-    def depthFirstSearch(self):
+    def depthFirstSearch(self,categoryID):
         
         def depthFirstSearch_Aux(node, htmlist):
             visited[node] = True
+            print("visiting ",node)
+            print(self.graph.adjNodes[node])
             for nodeAdj in self.graph.adjNodes[node]:
                 print(nodeAdj,visited.get(nodeAdj) )
                 if (visited.get(nodeAdj) == False):
@@ -64,56 +66,11 @@ class Transformation:
                     visited[nodeAdj] = False
 
         visited = {}
-        for nodeAdj in list (self.graph.adjNodes):
-            rebootVisited()
-            print("-DFS  ->", nodeAdj)
-            out = depthFirstSearch_Aux(nodeAdj,'')
-            print(out)
-   
-        print("POC")
         rebootVisited()
-        print(visited)
-        print("iterating 1")
-        print(depthFirstSearch_Aux(1,''))
+        #print(visited)
+        out = depthFirstSearch_Aux(categoryID,'')
+        return out.encode('utf-8')
         
-    def breadthFirstSearch(self, categoryID):
-    
-        def breadthFirstSearch_Aux(src,visited):
-            queue = []
-            queue.append(src)
-            #html = "<ul>"+ str(src)
-            html = ""
-            while(queue):
-                node = queue.pop(0)
-                print(queue)
-                html = html+"<ul>"+ str(node)
-                print(node)
-                visited[node] = True
-                if(not self.graph.adjNodes[node]):
-                    print(node,"has not childs")
-                    html = html+"</ul>"
-                    
-                for nodeAdj in self.graph.adjNodes[node]:
-                    if (visited.get(nodeAdj) == False):
-                        print("nodeAdj",nodeAdj)
-                        queue.append(nodeAdj)
-                        #html = html+"<ul>"+ str(nodeAdj)+"</ul>"
-                print(queue)
-                html = html+"</ul>"
-            return html
-                        #htmlist = depthFirstSearch_Aux(nodeAdj,htmlist)
-                #return "<ul>"+str(node)+htmlist+"</ul>"      
-        
-        print("Make logic to render "+categoryID)
-        visited = {}
-        def rebootVisited():
-            for nodeParent in self.graph.adjNodes:
-                for nodeAdj in self.graph.adjNodes[nodeParent]:
-                    visited[nodeAdj] = False
-        
-        print(visited)
-        rebootVisited()
-        print(breadthFirstSearch_Aux(1,visited))
         
         
         

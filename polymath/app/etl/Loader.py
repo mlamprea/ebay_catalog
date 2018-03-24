@@ -38,13 +38,18 @@ class Loader:
         except Exception as e:
             print('It can\'t save into table ',e)
 
-    def loadHTML(self,htmlString):
+    def loadHTML(self,htmlString,categoryID):
         try:
             filename = self.prop.get('HTML','templateHTML')
             file = open(filename)
             script = file.read()
-            file.close();
-            return script.format(htmlString)
+            file.close()
+            htmldoc = str(script).replace("HTMLTEXT",str(htmlString))
+            fileOutputName = str(categoryID)+".html"
+            fileOutput = open(fileOutputName,"w")
+            fileOutput.write(htmldoc) 
+            fileOutput.close() 
+            print(fileOutputName+" generated.")
             
         except IOError:
             print('Loader -> Error: can\'t find file or read data ',filename)

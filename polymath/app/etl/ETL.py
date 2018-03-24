@@ -37,7 +37,7 @@ class ETL:
         self.transformer.rowsToCategories(dataCategories)
         html = self.transformer.depthFirstSearch(categoryID)
         #html = self.transformer.breadthFirstSearch(categoryID)
-        return self.loader.loadHTML(html)
+        return self.loader.loadHTML(html,categoryID)
 
         
  
