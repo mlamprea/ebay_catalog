@@ -8,7 +8,7 @@ Created on Thu Mar 22 18:45:31 2018
 """
 from Extractor import Extractor
 from Transformation import Transformation
-from LoaderSQL import LoaderSQL
+from Loader import Loader
 
 """
 ETL (Extract, Transform and Load) Process
@@ -19,19 +19,26 @@ class ETL:
         self.prop = prop
         self.extractor = Extractor(prop)
         self.transformer = Transformation(prop)
+        self.loader = Loader(prop)
         
     def WSToSQL(self):
-        LoaderSQL().load(Transformation().transformXML(Extractor().extractFromEbayService()))
+        categoriesLevel1 = self.transformer.transformXML(self.extractor.extractLevel1FromEbayService())
+        self.loader.preLoadSQL()
+        size = len(categoriesLevel1)
+        for (idx,category) in enumerate(categoriesLevel1):
+            categoryID = category[0]
+            print("Building "+str(int(idx)*100/size)+"%")
+            self.loader.loadSQL(self.transformer.transformXML(self.extractor.extractFromEbayService(categoryID)))
         
-    def SQLToHTML(self):
+    def SQLToHTML(self,categoryID):
         dataNodes = self.extractor.extractNodesFromDB()
         self.transformer.rowsToGraph(dataNodes)
         dataCategories = self.extractor.extractCategoriesFromDB()
         self.transformer.rowsToCategories(dataCategories)
-        self.transformer.depthFirstSearch();
+        #self.transformer.depthFirstSearch(categoryID)
+        html = self.transformer.breadthFirstSearch(categoryID)
+        return self.loader.loadHTML(html)
 
-        
-        pass
         
  
        

@@ -12,11 +12,16 @@ class Extractor:
     def __init__(self,prop):
         self.prop = prop
 
-    def extractFromEbayService(self):
-        service = EbayService()
-        xmlString = service.retrieveCategories()
+    def extractFromEbayService(self,categoryID):
+        service = EbayService(self.prop)
+        xmlString = service.retrieveCategories(categoryID)
         return xmlString
 
+    def extractLevel1FromEbayService(self):
+        service = EbayService(self.prop)
+        xmlString = service.retrieveLevel1()
+        return xmlString
+    
     def extractFromDB(self,dbname, query):
         dbService  = DBService(dbname)
         data = dbService.fetchData(query)

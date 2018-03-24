@@ -13,19 +13,50 @@ class Main:
     def __init__(self):
         config = ConfigParser.ConfigParser()
         config.read('../resources/App.properties')
-        
-        print("Main - Properties")
-        print(config.get('DB','dbname'))
         self.etl = ETL(config)
         
-    def getTreeNodes(self):
-        self.etl.SQLToHTML()
+    def getTreeNodesHTML(self,categoryID):
+        self.etl.SQLToHTML(categoryID)
+
+    def downloadData(self):
+        self.etl.WSToSQL()
+        print("OK")
         
     def __del__(self):
         self.prop = None
         
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
+    #app = Main()
+    #app.getTreeNodes()
+
+from optparse import OptionParser
+
+def main():
+    parser = OptionParser(usage="usage: ./categories [options] filename",
+                          version="%prog 1.0")
+    parser.add_option("-b", "--rebuild",
+                      action="store_true",
+                      dest="rebuild",
+                      default=False,
+                      help="Build database from Ebay Service")
+    parser.add_option("-n", "--render",
+                      action="store", 
+                      dest="categoryID",
+                      default="-1",
+                      help="Render HTML associated to a CategoryID",)
+    (options, args) = parser.parse_args()
+
+
+    categoryID = options.categoryID
     app = Main()
-    app.getTreeNodes()
+    if(options.rebuild):
+        app.downloadData()
+    else:
+        print("Rendering HTML ",categoryID+".hmtl")
+        app.getTreeNodesHTML(categoryID)
+        
+
+if __name__ == '__main__':
+    main()
      
