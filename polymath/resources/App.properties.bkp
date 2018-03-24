@@ -60,3 +60,19 @@ templateHTML = ../resources/template.html
         rebootVisited()
         print(breadthFirstSearch_Aux(1,visited))
         
+
+
+
+
+
+
+
+
+
+
+        print(self.stackDFS)
+        print('stack fetch last item')
+        print(str(self.stackDFS[len(self.stackDFS) - 1]))
+        print('stack pop')
+        print(str(self.stackDFS.pop()))
+        print(str(self.stackDFS.pop()))

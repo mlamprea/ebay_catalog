@@ -16,6 +16,7 @@ class Transformation:
         self.graph = Graph()
         self.dictCategories = {}
         self.visited = {}
+        self.stackDFS = []
         pass
     
     def transformXML(self, xml):
@@ -48,29 +49,54 @@ class Transformation:
         for (category, subCategory) in rows:
             self.graph.addEdge(int(category),int(subCategory))
         
-    def depthFirstSearch(self,categoryID):
+    def buildHTML(self,categoryID,(dataNodes, dataCategories)):
         
-        def depthFirstSearch_Aux(node, htmlist):
+        def depthFirstSearch(node,parent):
             visited[node] = True
-            print("visiting ",node)
-            print(self.graph.adjNodes[node])
+            self.stackDFS.append((node,parent))
             for nodeAdj in self.graph.adjNodes[node]:
-                print(nodeAdj,visited.get(nodeAdj) )
+                print(nodeAdj,visited.get(nodeAdj) )    
                 if (visited.get(nodeAdj) == False):
-                      htmlist = depthFirstSearch_Aux(nodeAdj,htmlist)
-            return "<ul>"+str(node)+htmlist+"</ul>"
+                    depthFirstSearch(nodeAdj,node)
             
         def rebootVisited():
             for nodeParent in self.graph.adjNodes:
                 for nodeAdj in self.graph.adjNodes[nodeParent]:
                     visited[nodeAdj] = False
 
+        # Create a graph (tree).This represents the hierarchy of categories
+        # Save categories into dic by using categoryid as key
+        self.rowsToGraph(dataNodes)
+        self.rowsToCategories(dataCategories)
+        
+        # Make a DFS traverse and detect when should build a html tag
         visited = {}
         rebootVisited()
-        #print(visited)
-        out = depthFirstSearch_Aux(categoryID,'')
+        import sys
+        #Parent of Node CategoryID might be negative infinite
+        depthFirstSearch(categoryID,-sys.maxsize)
+        print(self.stackDFS)
+        stackDFS = self.stackDFS
+        stackHTML = []
+        while(stackDFS):
+            (node,parent) = stackDFS.pop()
+            if not stackHTML:
+                tag = "<ul>"+str(node)+"</ul>"
+                stackHTML.append(((node,parent),tag))
+            else:
+                ((n,p),t) = stackHTML[len(stackHTML)-1]
+                # if node is parent of node built as htlm
+                if(node == p):
+                    # get all nodes from stackhtml
+                    acc = ''
+                    while(stackHTML):
+                        ((n,p),t) = stackHTML.pop()
+                        acc = t+acc
+                    tag = "<ul>"+str(node)+acc+"</ul>"
+                    stackHTML.append(((node,parent),tag))
+                else:
+                    tag = "<ul>"+str(node)+"</ul>"
+                    stackHTML.append(((node,parent),tag))
+
+        (root,out) = stackHTML.pop()
         return out.encode('utf-8')
-        
-        
-        
-        

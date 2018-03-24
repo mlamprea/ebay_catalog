@@ -36,3 +36,8 @@ class Extractor:
         dbname = self.prop.get('DB','dbname')
         qCategories = self.prop.get('DB','qCategories')
         return self.extractFromDB(dbname, qCategories)
+    
+    def extractTreeFromDB(self):
+        dataNodes = self.extractNodesFromDB()
+        dataCategories = self.extractCategoriesFromDB()
+        return (dataNodes,dataCategories)
