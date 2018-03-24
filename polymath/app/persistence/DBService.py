@@ -20,6 +20,8 @@ class DBService:
             return rows
         except Exception as e:
             print('DBService ->',e)
+            import sys
+            sys.exit(1)
         
         pass
         

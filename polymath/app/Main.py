@@ -48,13 +48,16 @@ def main():
     (options, args) = parser.parse_args()
 
 
-    categoryID = int(options.categoryID)
-    app = Main()
-    if(options.rebuild):
-        app.downloadData()
-    else:
-        print("Rendering HTML ",str(categoryID)+".hmtl")
-        app.getTreeNodesHTML(categoryID)
+    try:
+        categoryID = int(options.categoryID)
+        app = Main()
+        if(options.rebuild):
+            app.downloadData()
+        else:
+            print("Rendering HTML ",str(categoryID)+".hmtl")
+            app.getTreeNodesHTML(categoryID)
+    except Exception as e:
+        print("CategoryID no generated ",e)
         
 
 if __name__ == '__main__':

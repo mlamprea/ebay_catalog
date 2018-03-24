@@ -43,7 +43,6 @@ class Transformation:
     def rowsToCategories(self, rows):
         for category in rows:
             self.dictCategories[str(category[0])] = category
-        #print(self.dictCategories)    
 
     def rowsToGraph(self, rows):
         for (category, subCategory) in rows:
@@ -55,7 +54,6 @@ class Transformation:
             visited[node] = True
             self.stackDFS.append((node,parent))
             for nodeAdj in self.graph.adjNodes[node]:
-                print(nodeAdj,visited.get(nodeAdj) )    
                 if (visited.get(nodeAdj) == False):
                     depthFirstSearch(nodeAdj,node)
             
@@ -83,13 +81,17 @@ class Transformation:
         import sys
         #Parent of Node CategoryID might be negative infinite
         depthFirstSearch(categoryID,-sys.maxsize)
-        print(self.stackDFS)
         stackDFS = self.stackDFS
         stackHTML = []
         while(stackDFS):
             (node,parent) = stackDFS.pop()
             if not stackHTML:
-                category = self.dictCategories[str(node)]
+                category = self.dictCategories.get(str(node),None)
+                if(category == None):
+                    print('CategoriID no found')
+                    import sys
+                    sys.exit(1)
+                    return
                 htmlitems = buildHTMLTagItem(category)
                 tag = "<ul>"+htmlitems+"</ul>"
                 stackHTML.append(((node,parent),tag))
