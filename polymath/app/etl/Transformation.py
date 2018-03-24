@@ -42,7 +42,7 @@ class Transformation:
     
     def rowsToCategories(self, rows):
         for category in rows:
-            self.dictCategories[category[0]] = category
+            self.dictCategories[str(category[0])] = category
         #print(self.dictCategories)    
 
     def rowsToGraph(self, rows):
@@ -64,6 +64,14 @@ class Transformation:
                 for nodeAdj in self.graph.adjNodes[nodeParent]:
                     visited[nodeAdj] = False
 
+        def buildHTMLTagItem(category):
+            CategoryID = '<li>CategoryID: '+str(category[0])+'</li>'
+            CategoryName = '<li>CategoryName: '+str(category[1])+'</li>'
+            CategoryLevel = '<li>CategoryLevel: '+str(category[2])+'</li>'
+            BestOfferEnabled = '<li>BestOfferEnabled:'+str(category[3])+'</li>'
+            AutoPayEnabled = '<li>AutoPayEnabled:'+str(category[4])+'</li>'
+            return 'Info Category '+str(category[0])+CategoryID+CategoryName+CategoryLevel+BestOfferEnabled+AutoPayEnabled
+
         # Create a graph (tree).This represents the hierarchy of categories
         # Save categories into dic by using categoryid as key
         self.rowsToGraph(dataNodes)
@@ -81,7 +89,9 @@ class Transformation:
         while(stackDFS):
             (node,parent) = stackDFS.pop()
             if not stackHTML:
-                tag = "<ul>"+str(node)+"</ul>"
+                category = self.dictCategories[str(node)]
+                htmlitems = buildHTMLTagItem(category)
+                tag = "<ul>"+htmlitems+"</ul>"
                 stackHTML.append(((node,parent),tag))
             else:
                 ((n,p),t) = stackHTML[len(stackHTML)-1]
@@ -92,10 +102,16 @@ class Transformation:
                     while(stackHTML):
                         ((n,p),t) = stackHTML.pop()
                         acc = t+acc
-                    tag = "<ul>"+str(node)+acc+"</ul>"
+                    category = self.dictCategories[str(node)]
+                    htmlitems = buildHTMLTagItem(category)
+                    tag = "<ul>"+htmlitems+acc+"</ul>"
+                    #tag = "<ul>"+str(node)+acc+"</ul>"
                     stackHTML.append(((node,parent),tag))
                 else:
-                    tag = "<ul>"+str(node)+"</ul>"
+                    category = self.dictCategories[str(node)]
+                    htmlitems = buildHTMLTagItem(category)
+                    tag = "<ul>"+htmlitems+"</ul>"
+                    #tag = "<ul>"+str(node)+"</ul>"
                     stackHTML.append(((node,parent),tag))
 
         (root,out) = stackHTML.pop()
